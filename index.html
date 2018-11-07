@@ -1,0 +1,24 @@
+<html>
+<head>
+    <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+    <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+    <script src="assets/components.js"></script>
+</head>
+<body>
+
+
+<a-scene environment="preset: default;">
+    <a-entity websocket-translater></a-entity>
+
+    <a-entity position="0 2 0"> <!-- entity representing the user  -->
+        <a-camera>
+            <a-cursor geometry='primitive: ring' color='#FFC0CB'></a-cursor>
+        </a-camera>
+
+        <a-text value="make wall appear" position="0 0 -5"></a-text><!-- taille map  -->
+        <a-text value="make player appear" position="0 0 -5"></a-text><!-- nom couleur position direction isCurrentPlayer -->
+        <a-text value="move snake" position="0 0 -5"></a-text><!-- id direction -->
+    </a-entity>
+</a-scene>
+</body>
+</html>
