@@ -1,4 +1,11 @@
 let initialPlayerRotation;
+const numberApples = 2;
+const appleAppearanceZone = {
+    x: [-20, 20],
+    y: [5, 35],
+    z: [5, 45],
+}
+let apples = []
 
 AFRAME.registerComponent('always-moving', {
     schema: {
@@ -160,11 +167,45 @@ AFRAME.registerComponent('start-game-on-click', {
     }
 })
 
+function createApple(n = 1) {
+    for (i = 0; i < n; i++) {
+        if (apples.length < numberApples + 1) {
+            const randomX = Math.floor(Math.random() * (appleAppearanceZone.x[1] - appleAppearanceZone.x[0] +1)) + appleAppearanceZone.x[0];
+            const randomY = Math.floor(Math.random() * (appleAppearanceZone.y[1] - appleAppearanceZone.y[0] +1)) + appleAppearanceZone.y[0];
+            const randomZ = Math.floor(Math.random() * (appleAppearanceZone.z[1] - appleAppearanceZone.z[0] +1)) + appleAppearanceZone.z[0];
+    
+            let scene = document.querySelector("a-scene")
+            let apple = document.createElement("a-box")
+    
+            apple.setAttribute('position', randomX + " " + randomY + " " + randomZ)
+            apple.setAttribute('depth', '1')
+            apple.setAttribute('width', '1')
+            apple.setAttribute('height', '1')
+            apple.setAttribute('class', 'apple')
+            apple.setAttribute('color', 'red')
+    
+            apples.push({
+                x: randomX,
+                y: randomY,
+                z: randomZ
+            })
+    
+            scene.append(apple);
+        }
+    }
+}
+
 function startGame(){
     console.log("start the game!")
 
+    createApple(2);
+
     Array.prototype.slice.call(document.querySelectorAll('.wall')).forEach(wall => {
         wall.setAttribute('aabb-collider', 'objects:#head;')
+    })
+
+    Array.prototype.slice.call(document.querySelectorAll('.apple')).forEach(apple => {
+        apple.setAttribute('aabb-collider', 'objects:#head;')
     })
 
     document.querySelector('#player').setAttribute('always-moving', true)
