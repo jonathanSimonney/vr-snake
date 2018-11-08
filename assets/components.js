@@ -9,8 +9,6 @@ AFRAME.registerComponent('always-moving', {
         initialPlayerRotation = this.el.getAttribute("rotation");
     },
 
-
-
     tick: function () {
         const cameraRotation = document.querySelector('#camera').getAttribute("rotation")
 
@@ -36,11 +34,62 @@ AFRAME.registerComponent('always-moving', {
     }
 });
 
+//execute actions to execute when game is lost
 function looseGame(event){
-    console.log("the game is lost");
     document.querySelector('#player').removeAttribute('always-moving')
+    document.querySelector('#player').removeEventListener('hit', looseGame)
     document.querySelector('#player a-text').setAttribute('value', 'you lost. your score is of ???')
     document.querySelector('#player a-text').setAttribute('visible', true)
+    document.querySelector('#player a-text').setAttribute('position', '0 -10 0')
+
+    //dissociate the camera from the body
+    dissociateCameraFromBody();
+    //first we set the environment
+    setRandomEnvironment()
+    //then we animate outside of the cube
+    animateOutsideCube()
+}
+
+function dissociateCameraFromBody(){
+    const cameraEl = document.querySelector('a-camera')
+    const currentCameraPosition = cameraEl.object3D.getWorldPosition();
+
+    console.log(document.querySelector('#player'))
+    console.log(cameraEl)
+
+    document.querySelector('#player').removeChild(cameraEl)
+    cameraEl.setAttribute("position", currentCameraPosition)
+    document.querySelector('a-scene').appendChild(cameraEl)
+}
+
+//set a random environment
+function setRandomEnvironment(){
+    const arrayEnvironment = ['none', 'default', 'contact', 'egypt', 'checkerboard', 'forest', 'goaland', 'yavapai',
+        'goldmine', 'threetowers', 'poison', 'arches', 'tron', 'japan', 'dream', 'volcano', 'starry', 'osiris']
+    const environment = arrayEnvironment[Math.floor(Math.random()*arrayEnvironment.length)];
+    document.querySelector('a-scene').setAttribute('environment', 'preset:' + environment + ';')
+}
+
+//take the player outside of the cube
+function animateOutsideCube(){
+    let animationToApply = document.createElement('a-animation')
+
+    animationToApply.setAttribute("attribute", "position")
+    animationToApply.setAttribute("dur", "10000")
+    animationToApply.setAttribute("fill", "forwards")
+    //arrival is on top
+    animationToApply.setAttribute("to", "0 50 25")
+
+    let rotationAnimationToApply = document.createElement('a-animation')
+
+    rotationAnimationToApply.setAttribute("attribute", "rotation")
+    rotationAnimationToApply.setAttribute("dur", "10000")
+    rotationAnimationToApply.setAttribute("fill", "forwards")
+    //choose arrival attribute based on initial attribute.
+    rotationAnimationToApply.setAttribute("to", "180 0 0")
+
+    document.querySelector('a-camera').appendChild(animationToApply)
+    document.querySelector('a-camera').appendChild(rotationAnimationToApply)
 }
 
 AFRAME.registerComponent('crash-on-wall', {
