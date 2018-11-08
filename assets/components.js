@@ -5,7 +5,7 @@ const appleAppearanceZone = {
     y: [5, 35],
     z: [5, 45],
 }
-let apples = []
+let score = 0;
 
 AFRAME.registerComponent('always-moving', {
     schema: {
@@ -50,9 +50,24 @@ function looseGame(event){
     document.querySelector('#player a-text').setAttribute('visible', true)
 }
 
-AFRAME.registerComponent('crash-on-wall', {
+function eatApple(event) {
+    score++
+    console.log(score)
+    document.querySelector('a-scene').removeChild(event.detail.el)
+    createApple()
+}
+
+function checkColision(event) {
+    if (event.detail.el.className == "apple") {
+        eatApple(event)
+    } else {
+        looseGame(event)
+    }
+}
+
+AFRAME.registerComponent('colision', {
     init: function () {
-        this.el.addEventListener('hit', looseGame)
+        this.el.addEventListener('hit', checkColision)
     }
 })
 
@@ -169,29 +184,22 @@ AFRAME.registerComponent('start-game-on-click', {
 
 function createApple(n = 1) {
     for (i = 0; i < n; i++) {
-        if (apples.length < numberApples + 1) {
-            const randomX = Math.floor(Math.random() * (appleAppearanceZone.x[1] - appleAppearanceZone.x[0] +1)) + appleAppearanceZone.x[0];
-            const randomY = Math.floor(Math.random() * (appleAppearanceZone.y[1] - appleAppearanceZone.y[0] +1)) + appleAppearanceZone.y[0];
-            const randomZ = Math.floor(Math.random() * (appleAppearanceZone.z[1] - appleAppearanceZone.z[0] +1)) + appleAppearanceZone.z[0];
-    
-            let scene = document.querySelector("a-scene")
-            let apple = document.createElement("a-box")
-    
-            apple.setAttribute('position', randomX + " " + randomY + " " + randomZ)
-            apple.setAttribute('depth', '1')
-            apple.setAttribute('width', '1')
-            apple.setAttribute('height', '1')
-            apple.setAttribute('class', 'apple')
-            apple.setAttribute('color', 'red')
-    
-            apples.push({
-                x: randomX,
-                y: randomY,
-                z: randomZ
-            })
-    
-            scene.append(apple);
-        }
+        const randomX = Math.floor(Math.random() * (appleAppearanceZone.x[1] - appleAppearanceZone.x[0] +1)) + appleAppearanceZone.x[0];
+        const randomY = Math.floor(Math.random() * (appleAppearanceZone.y[1] - appleAppearanceZone.y[0] +1)) + appleAppearanceZone.y[0];
+        const randomZ = Math.floor(Math.random() * (appleAppearanceZone.z[1] - appleAppearanceZone.z[0] +1)) + appleAppearanceZone.z[0];
+
+        let scene = document.querySelector("a-scene")
+        let apple = document.createElement("a-box")
+
+        apple.setAttribute('position', randomX + " " + randomY + " " + randomZ)
+        apple.setAttribute('depth', '1')
+        apple.setAttribute('width', '1')
+        apple.setAttribute('height', '1')
+        apple.setAttribute('class', 'apple')
+        apple.setAttribute('color', 'red')
+        apple.setAttribute('aabb-collider', 'objects:#head;')
+
+        scene.append(apple);
     }
 }
 
@@ -202,10 +210,6 @@ function startGame(){
 
     Array.prototype.slice.call(document.querySelectorAll('.wall')).forEach(wall => {
         wall.setAttribute('aabb-collider', 'objects:#head;')
-    })
-
-    Array.prototype.slice.call(document.querySelectorAll('.apple')).forEach(apple => {
-        apple.setAttribute('aabb-collider', 'objects:#head;')
     })
 
     document.querySelector('#player').setAttribute('always-moving', true)
