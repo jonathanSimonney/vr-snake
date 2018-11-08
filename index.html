@@ -20,10 +20,12 @@
         <a-box id="head" position="0 0 0" depth="1" height="1" width="1" colision visible="false"></a-box>
 
         <a-camera id="camera">
-            <a-cursor geometry='primitive: ring' color='#FFC0CB'></a-cursor>
+            <a-cursor geometry='primitive: ring' color='#FFC0CB'>
+                <a-text value="paused" id="pausedIndic" visible="false"></a-text>
+            </a-cursor>
         </a-camera>
 
-        <a-text position="-0.75 0 -2" value="start game" start-game-on-click></a-text>
+        <a-text position="-0.75 0 -2" value="start game" id="legend" start-game-on-click></a-text>
     </a-entity>
 </a-scene>
 </body>

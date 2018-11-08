@@ -48,8 +48,8 @@ AFRAME.registerComponent('always-moving', {
 function looseGame(event){
     console.log("the game is lost");
     document.querySelector('#player').removeAttribute('always-moving')
-    document.querySelector('#player a-text').setAttribute('value', 'you lost. your score is of ' + score)
-    document.querySelector('#player a-text').setAttribute('visible', true)
+    document.querySelector('#legend').setAttribute('value', 'you lost. your score is of ' + score)
+    document.querySelector('#legend').setAttribute('visible', true)
 }
 
 function eatApple(event) {
@@ -71,6 +71,7 @@ AFRAME.registerComponent('click-pause', {
     init: function () {
         this.el.addEventListener('click', () => {
             isPaused = !isPaused
+            document.querySelector('#pausedIndic').setAttribute('visible', isPaused)
         })
     }
 })
@@ -223,6 +224,6 @@ function startGame(){
     })
 
     document.querySelector('#player').setAttribute('always-moving', true)
-    document.querySelector('#player a-text').setAttribute('visible', false)
-    document.querySelector('#player a-text').removeAttribute('start-game-on-click')
+    document.querySelector('#legend').setAttribute('visible', false)
+    document.querySelector('#legend').removeAttribute('start-game-on-click')
 }
