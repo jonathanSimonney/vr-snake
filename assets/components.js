@@ -46,7 +46,7 @@ AFRAME.registerComponent('always-moving', {
 function looseGame(event){
     console.log("the game is lost");
     document.querySelector('#player').removeAttribute('always-moving')
-    document.querySelector('#player a-text').setAttribute('value', 'you lost. your score is of ???')
+    document.querySelector('#player a-text').setAttribute('value', 'you lost. your score is of ' + score)
     document.querySelector('#player a-text').setAttribute('visible', true)
 }
 
