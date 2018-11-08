@@ -6,6 +6,7 @@ const appleAppearanceZone = {
     z: [5, 45],
 }
 let score = 0;
+let isPaused = false;
 
 AFRAME.registerComponent('always-moving', {
     schema: {
@@ -19,6 +20,7 @@ AFRAME.registerComponent('always-moving', {
 
 
     tick: function () {
+        if (isPaused){return;}
         const cameraRotation = document.querySelector('#camera').getAttribute("rotation")
 
         const rxDecalage = cameraRotation.x
@@ -64,6 +66,14 @@ function checkColision(event) {
         looseGame(event)
     }
 }
+
+AFRAME.registerComponent('click-pause', {
+    init: function () {
+        this.el.addEventListener('click', () => {
+            isPaused = !isPaused
+        })
+    }
+})
 
 AFRAME.registerComponent('colision', {
     init: function () {
