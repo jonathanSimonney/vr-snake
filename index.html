@@ -2,7 +2,10 @@
 <head>
     <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
     <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+    <script src="https://rawgit.com/protyze/aframe-curve-component/master/dist/aframe-curve-component.min.js"></script>
+    <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
     <script src="assets/components.js"></script>
+    <script src="assets/movementSnake.js"></script>
 </head>
 <body>
 
@@ -16,13 +19,16 @@
     <a-box position="0 1 25" class="wall" depth="50" height="1" width="50" color="yellow"></a-box>
     <a-box position="0 40 25" class="wall" depth="50" height="1" width="50" color="yellow"></a-box>
 
-    <a-entity position="0 20 25" rotation="3 -130 0" id="player"> <!-- entity representing the user  -->
-        <a-box id="head" position="0 0 0" depth="1" height="1" width="1" colision color="#16560f"></a-box>
+    <a-curve id="pathFollowed"></a-curve> <!-- will be filled by movement of the head -->
+
+    <a-entity position="0 20 25" id="player"> <!-- entity representing the user  -->
+        <!--<a-box position="0 0 2.2" depth="1" height="1" width="1" class="wall" color="#21db0d"></a-box>-->
 
         <a-camera id="camera" position="0 0 0">
             <a-cursor geometry='primitive: ring' color='#FFC0CB'>
                 <a-text position="-0.4 0 0" value="paused" id="pausedIndic" visible="false"></a-text>
             </a-cursor>
+            <a-box id="head" class="snake" position="0 0 0" depth="1" height="1" width="1" colision color="#16560f" draw-path></a-box>
         </a-camera>
 
         <a-plane start-game-on-click position="0 0 -3" width="3" height="3" color="blue" id="legend">
@@ -30,6 +36,8 @@
         </a-plane>
 
     </a-entity>
+
+    <!--<a-box position="0 20 26.1" class="snake body-snake" depth="1" height="1" width="1" class="" color="#21db0d"></a-box>-->
 </a-scene>
 </body>
 </html>

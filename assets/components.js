@@ -6,7 +6,7 @@ const appleAppearanceZone = {
     z: [5, 45],
 }
 let score = 0;
-let isPaused = false;
+let isPaused = true;
 
 AFRAME.registerComponent('always-moving', {
     schema: {
@@ -53,10 +53,11 @@ function looseGame(event){
 }
 
 function eatApple(event) {
-    score++
-    console.log(score)
-    document.querySelector('a-scene').removeChild(event.detail.el)
-    createApple()
+    // score++
+    // console.log(score)
+    // document.querySelector('a-scene').removeChild(event.detail.el)
+    event.detail.el.setAttribute("color", "#b413d8")
+    // createApple()
 }
 
 function checkColision(event) {
@@ -65,6 +66,25 @@ function checkColision(event) {
     } else {
         looseGame(event)
     }
+}
+
+function convertApple(event){
+    let snakeBodyPart = event.detail.el;
+    console.log("hit just ended", event)
+
+    //we convert the apple
+    if (document.querySelector('#last')){
+        document.querySelector('#last').removeAttribute('id')
+    }
+
+    snakeBodyPart.setAttribute("class", "snake body-snake")
+    snakeBodyPart.setAttribute("id", "last")
+    snakeBodyPart.setAttribute("color", "#21db0d")
+
+    //and increment the score and add a new apple
+    score++
+    console.log(score)
+    createApple()
 }
 
 AFRAME.registerComponent('click-pause', {
@@ -79,6 +99,7 @@ AFRAME.registerComponent('click-pause', {
 AFRAME.registerComponent('colision', {
     init: function () {
         this.el.addEventListener('hit', checkColision)
+        this.el.addEventListener('hitend', convertApple)
     }
 })
 
@@ -145,7 +166,7 @@ AFRAME.registerComponent('aabb-collider', {
                 return collisions.indexOf(el) === -1;
             }).forEach(function removeState (el) {
                 el.removeState(self.data.state);
-                el.emit('hitend');
+                el.emit('hitend', {el: self.el});
             });
             // Store new collisions
             this.collisions = collisions;
@@ -226,4 +247,5 @@ function startGame(){
     document.querySelector('#player').setAttribute('always-moving', true)
     document.querySelector('#legend').setAttribute('visible', false)
     document.querySelector('#legend').removeAttribute('start-game-on-click')
+    document.querySelector('#legend').removeEventListener('click', startGame)
 }
