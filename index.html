@@ -9,15 +9,15 @@
 
 <a-scene environment="preset: default; playArea=50;">
     <!--walls for the box-->
-    <a-box position="0 20 0" class="wall" depth="1" height="40" width="50" color="yellow"></a-box>
-    <a-box position="25 20 25" class="wall" depth="50" height="40" width="1" color="yellow"></a-box>
-    <a-box position="-25 20 25" class="wall" depth="50" height="40" width="1" color="yellow"></a-box>
-    <a-box position="0 20 50" class="wall" depth="1" height="40" width="50" color="yellow"></a-box>
-    <a-box position="0 1 25" class="wall" depth="50" height="1" width="50" color="yellow"></a-box>
-    <a-box position="0 40 25" class="wall" depth="50" height="1" width="50" color="yellow"></a-box>
+    <a-box position="0 20 0" class="wall" depth="1" height="40" width="50" color="yellow" aabb-collider="objects:#head;"></a-box>
+    <a-box position="25 20 25" class="wall" depth="50" height="40" width="1" color="yellow" aabb-collider="objects:#head;"></a-box>
+    <a-box position="-25 20 25" class="wall" depth="50" height="40" width="1" color="yellow" aabb-collider="objects:#head;"></a-box>
+    <a-box position="0 20 50" class="wall" depth="1" height="40" width="50" color="yellow" aabb-collider="objects:#head;"></a-box>
+    <a-box position="0 1 25" class="wall" depth="50" height="1" width="50" color="yellow" aabb-collider="objects:#head;"></a-box>
+    <a-box position="0 40 25" class="wall" depth="50" height="1" width="50" color="yellow" aabb-collider="objects:#head;"></a-box>
 
     <a-entity position="-20 5 4" rotation="3 -130 0" always-moving> <!-- entity representing the user  -->
-        <a-box id="head" position="0 0 0" depth="1" height="1" width="1" color="red" aabb-collider="objects:.wall;" crash-on-wall></a-box>
+        <a-box id="head" position="0 0 0" depth="1" height="1" width="1" color="red" crash-on-wall></a-box>
 
         <a-camera id="camera">
             <a-cursor geometry='primitive: ring' color='#FFC0CB'></a-cursor>
