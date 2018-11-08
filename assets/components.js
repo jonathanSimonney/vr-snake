@@ -37,6 +37,7 @@ AFRAME.registerComponent('always-moving', {
 });
 
 function looseGame(event){
+    // console.log(event);
     console.log("the game is lost");
 }
 
@@ -137,7 +138,7 @@ AFRAME.registerComponent('aabb-collider', {
             }
 
             function handleHit (hitEl) {
-                hitEl.emit('hit');
+                hitEl.emit('hit', {el: self.el});
                 hitEl.addState(self.data.state);
                 self.el.emit('hit', {el: hitEl});
             }
@@ -150,3 +151,21 @@ AFRAME.registerComponent('aabb-collider', {
         };
     })()
 });
+
+AFRAME.registerComponent('start-game-on-click', {
+    init: function () {
+        this.el.addEventListener('click', startGame)
+    }
+})
+
+function startGame(){
+    console.log("start the game!")
+
+    Array.prototype.slice.call(document.querySelectorAll('.wall')).forEach(wall => {
+        wall.setAttribute('aabb-collider', 'objects:#head;')
+    })
+
+    document.querySelector('#player').setAttribute('always-moving', true)
+    const elemToSuppress = document.querySelector('#player a-text')
+    document.querySelector('#player').removeChild(elemToSuppress)
+}
