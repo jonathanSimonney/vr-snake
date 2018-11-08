@@ -17,15 +17,18 @@
     <a-box position="0 40 25" class="wall" depth="50" height="1" width="50" color="yellow"></a-box>
 
     <a-entity position="0 20 25" rotation="3 -130 0" id="player"> <!-- entity representing the user  -->
-        <a-box id="head" position="0 0 0" depth="1" height="1" width="1" colision visible="false"></a-box>
+        <a-box id="head" position="0 0 0" depth="1" height="1" width="1" colision color="#16560f"></a-box>
 
-        <a-camera id="camera">
+        <a-camera id="camera" position="0 0 0">
             <a-cursor geometry='primitive: ring' color='#FFC0CB'>
-                <a-text value="paused" id="pausedIndic" visible="false"></a-text>
+                <a-text position="-0.4 0 0" value="paused" id="pausedIndic" visible="false"></a-text>
             </a-cursor>
         </a-camera>
 
-        <a-text position="-0.75 0 -2" value="start game" id="legend" start-game-on-click></a-text>
+        <a-plane start-game-on-click position="0 0 -3" width="3" height="3" color="blue" id="legend">
+            <a-text value="start game"></a-text>
+        </a-plane>
+
     </a-entity>
 </a-scene>
 </body>
