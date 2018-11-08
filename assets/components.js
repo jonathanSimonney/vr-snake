@@ -37,8 +37,10 @@ AFRAME.registerComponent('always-moving', {
 });
 
 function looseGame(event){
-    // console.log(event);
     console.log("the game is lost");
+    document.querySelector('#player').removeAttribute('always-moving')
+    document.querySelector('#player a-text').setAttribute('value', 'you lost. your score is of ???')
+    document.querySelector('#player a-text').setAttribute('visible', true)
 }
 
 AFRAME.registerComponent('crash-on-wall', {
@@ -166,6 +168,6 @@ function startGame(){
     })
 
     document.querySelector('#player').setAttribute('always-moving', true)
-    const elemToSuppress = document.querySelector('#player a-text')
-    document.querySelector('#player').removeChild(elemToSuppress)
+    document.querySelector('#player a-text').setAttribute('visible', false)
+    document.querySelector('#player a-text').removeAttribute('start-game-on-click')
 }
