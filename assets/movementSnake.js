@@ -1,36 +1,33 @@
 let isFirstAppleEaten = false;
-
-AFRAME.registerComponent('queue', {
-    init: function () {
-        this.el.setAttribute('aabb-collider', 'objects:.apple;')
-        this.el.addEventListener('hit', beginCountingTick)
-        this.el.addEventListener('hitend', checkColisionEnd)
-    }
-
-})
-
-function beginCountingTick(event){
-    if (!event.detail.el){return;}
-
-    if (event.detail.el.className === "apple beganEating"){
-        event.detail.el.setAttribute("count-ticks", true)
-        event.detail.el.setAttribute("class", "apple beganDigesting")
-    }
-}
+let snakeTickLength = 0;
+// AFRAME.registerComponent('queue', {
+//     init: function () {
+//         this.el.setAttribute('aabb-collider', 'objects:.apple;')
+//         this.el.addEventListener('hit', beginCountingTick)
+//         this.el.addEventListener('hitend', checkColisionEnd)
+//     }
+//
+// })
 
 function checkColisionEnd(event){
     if (!event.detail.el){return;}
 
     // console.log(event.detail.el.className);
 
-    if (event.detail.el.className === "apple beganDigesting"){
+    if (event.detail.el.className === "apple beganEating"){
         let delay = 0
         if (!isFirstAppleEaten){
             delay = 10
             isFirstAppleEaten = true;
         }
 
-        delayedEvents.push({'triggerTicks': delay, 'execute': convertApple(event), 'currentTickNumber': 0})
+        tickDelay = event.detail.el.getAttribute("count-ticks").ticksNumber;
+        event.detail.el.removeAttribute("count-ticks")
+        delay += tickDelay;
+
+        snakeTickLength += delay
+
+        delayedEvents.push({'triggerTicks': snakeTickLength, 'execute': convertApple(event, delay), 'currentTickNumber': 0})
     }
 }
 
