@@ -7,6 +7,9 @@ const appleAppearanceZone = {
 }
 let score = 0;
 let isPaused = true;
+var eatsound = new Audio('assets/eatsound.ogg');
+var diesound = new Audio('assets/diesound.ogg');
+var music = new Audio('assets/music.mp3')
 
 AFRAME.registerComponent('always-moving', {
     schema: {
@@ -50,12 +53,15 @@ AFRAME.registerComponent('always-moving', {
 
 function looseGame(event){
     console.log("the game is lost");
+    isPaused = true;
     document.querySelector('#player').removeAttribute('always-moving')
     document.querySelector('#legend a-text').setAttribute('value', 'you lost. your score is of ' + score)
     document.querySelector('#legend').setAttribute('visible', true)
+    diesound.play();
 }
 
 function eatApple(eatenApple) {
+    eatsound.play();
     score++
     // document.querySelector('a-scene').removeChild(event.detail.el)
     eatenApple.setAttribute("color", "#b413d8")
@@ -70,7 +76,7 @@ function checkColision(event) {
     if ( event.detail.el.className == "beganEating" || event.detail.el.className == "beganDigesting"){return;}
     if (event.detail.el.className == "apple") {
         eatApple(event.detail.el)
-    } else {
+    } else if (!isPaused) {
         looseGame(event)
     }
 }
@@ -254,7 +260,7 @@ function createApple(n = 1) {
         apple.setAttribute('class', 'apple')
         apple.setAttribute('color', 'red')
         apple.setAttribute('aabb-collider', 'objects:#head;')
-        apple.setAttribute('sound', 'src: url(assets/eatsound.ogg); autoplay: true')
+
 
         scene.append(apple);
     }
@@ -262,6 +268,7 @@ function createApple(n = 1) {
 
 function startGame(){
     console.log("start the game!")
+    music.play()
 
     createApple(2);
 
