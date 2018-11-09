@@ -2,8 +2,6 @@
 <head>
     <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
     <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
-    <script src="https://rawgit.com/protyze/aframe-curve-component/master/dist/aframe-curve-component.min.js"></script>
-    <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
     <script src="assets/components.js"></script>
     <script src="assets/movementSnake.js"></script>
 </head>
@@ -28,7 +26,9 @@
             <a-cursor geometry='primitive: ring' color='#FFC0CB'>
                 <a-text position="-0.4 0 0" value="paused" id="pausedIndic" visible="false"></a-text>
             </a-cursor>
-            <a-box id="head" class="snake" position="0 0 0" depth="1" height="1" width="1" colision color="#16560f" draw-path></a-box>
+            <a-box id="head" class="snake last" position="0 0 0" depth="1" height="1" width="1" colision color="#16560f" draw-path>
+                <a-box id="queue" class="snake" position="0 0 0" depth="1" height="1" width="1" color="#253d2d"></a-box>
+            </a-box>
         </a-camera>
 
         <a-plane start-game-on-click position="0 0 -3" width="3" height="3" color="blue" id="legend">

@@ -7,6 +7,17 @@ const appleAppearanceZone = {
 }
 let score = 0;
 let isPaused = true;
+delayedEvents = []; //array of event with a tick before they should be triggered
+
+function checkForEvents(){
+    delayedEvents.forEach((singleDelayedEvent, index, object) => {
+        singleDelayedEvent.currentTickNumber++
+        if (singleDelayedEvent.currentTickNumber === singleDelayedEvent.triggerTicks){
+            singleDelayedEvent.execute();
+            object.splice(index, 1)
+        }
+    })
+}
 
 AFRAME.registerComponent('always-moving', {
     schema: {
@@ -21,6 +32,9 @@ AFRAME.registerComponent('always-moving', {
 
     tick: function () {
         if (isPaused){return;}
+
+        checkForEvents();
+
         const cameraRotation = document.querySelector('#camera').getAttribute("rotation")
 
         const rxDecalage = cameraRotation.x
@@ -61,6 +75,8 @@ function eatApple(event) {
 }
 
 function checkColision(event) {
+    if (!event.detail.el){return;}
+    // console.log(event)
     if (event.detail.el.className == "apple") {
         eatApple(event)
     } else {
@@ -69,22 +85,35 @@ function checkColision(event) {
 }
 
 function convertApple(event){
-    let snakeBodyPart = event.detail.el;
-    console.log("hit just ended", event)
+    return function(){
+        let snakeBodyPart = event.detail.el;
+        console.log("hit just ended", event)
 
-    //we convert the apple
-    if (document.querySelector('#last')){
-        document.querySelector('#last').removeAttribute('id')
+        // we remove the queue from the current last element
+        const queueTracker = document.querySelector('#queue')
+        const precedentLast = document.querySelector('.last')
+        precedentLast.removeChild(queueTracker)
+
+        //todo make the new body part follow the precedent last elem, BEFORE removing the last class. See if component should be a follow-elem (applied on new queue),
+        //todo or a track-following (applied on precedent last)
+
+        precedentLast.setAttribute("class", "snake body-snake")//thus removing the last class
+
+        //we convert the apple
+        // snakeBodyPart.setAttribute("queue", true)
+        snakeBodyPart.setAttribute("class", "snake body-snake last")
+        snakeBodyPart.setAttribute("color", "#21db0d")
+
+        //append the queue tracker to the "new" end of the snake
+        snakeBodyPart.appendChild(queueTracker)
+        // durationPath = 100 * document.querySelectorAll('a-curve a-curve-point').length //todo see best way to have a correct duration path, as tick are a measurement of game, not of time
+        // snakeBodyPart.setAttribute("alongpath", "curve: #pathFollowed; rotation: true; duration: " + durationPath + ";")
+
+        //and increment the score and add a new apple
+        score++
+        console.log(score)
+        createApple()
     }
-
-    snakeBodyPart.setAttribute("class", "snake body-snake")
-    snakeBodyPart.setAttribute("id", "last")
-    snakeBodyPart.setAttribute("color", "#21db0d")
-
-    //and increment the score and add a new apple
-    score++
-    console.log(score)
-    createApple()
 }
 
 AFRAME.registerComponent('click-pause', {
@@ -99,7 +128,7 @@ AFRAME.registerComponent('click-pause', {
 AFRAME.registerComponent('colision', {
     init: function () {
         this.el.addEventListener('hit', checkColision)
-        this.el.addEventListener('hitend', convertApple)
+        // this.el.addEventListener('hitend', convertApple)
     }
 })
 
@@ -167,6 +196,7 @@ AFRAME.registerComponent('aabb-collider', {
             }).forEach(function removeState (el) {
                 el.removeState(self.data.state);
                 el.emit('hitend', {el: self.el});
+                self.el.emit('hitend', {el: el});
             });
             // Store new collisions
             this.collisions = collisions;
@@ -245,6 +275,7 @@ function startGame(){
     })
 
     document.querySelector('#player').setAttribute('always-moving', true)
+    document.querySelector('#queue').setAttribute('queue', true)
     document.querySelector('#legend').setAttribute('visible', false)
     document.querySelector('#legend').removeAttribute('start-game-on-click')
     document.querySelector('#legend').removeEventListener('click', startGame)
