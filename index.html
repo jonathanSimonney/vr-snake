@@ -9,7 +9,7 @@
 <body>
 
 
-<a-scene environment="preset: default; playArea=50;" click-pause>
+<a-scene click-pause>
     <!--walls for the box-->
     <a-box position="0 20 0" class="wall" depth="1" height="40" width="50" color="yellow"></a-box>
     <a-box position="25 20 25" class="wall" depth="50" height="40" width="1" color="yellow"></a-box>
@@ -24,6 +24,7 @@
         <!--<a-box position="0 0 2.2" depth="1" height="1" width="1" class="wall" color="#21db0d"></a-box>-->
         
         <a-camera id="camera" position="0 0 0">
+            <a-light type="point" color="#aaa" position="0 0 0" intensity="0.6"></a-light>
             <a-cursor geometry='primitive: ring' color='#FFC0CB'>
                 <a-text id="legend" position="0 -0.4 -4" material="color: white" value="Please enter VR Mode" align="center"></a-text>
             </a-cursor>
