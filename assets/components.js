@@ -49,7 +49,7 @@ AFRAME.registerComponent('always-moving', {
 });
 
 function looseGame(event){
-    console.log("the game is lost");
+    console.log("the game is lost")
     document.querySelector('#player').removeAttribute('always-moving')
     document.querySelector('#legend a-text').setAttribute('value', 'you lost. your score is of ' + score)
     document.querySelector('#legend').setAttribute('visible', true)
@@ -59,7 +59,7 @@ function eatApple(eatenApple) {
     score++
     // document.querySelector('a-scene').removeChild(event.detail.el)
     eatenApple.setAttribute("color", "#b413d8")
-    eatenApple.setAttribute("class", "beganEating")
+    eatenApple.setAttribute("class", "apple beganEating")
 
     // createApple()
 }
@@ -67,7 +67,7 @@ function eatApple(eatenApple) {
 function checkColision(event) {
     if (!event.detail.el){return;}
     // console.log(event)
-    if ( event.detail.el.className == "beganEating" || event.detail.el.className == "beganDigesting"){return;}
+    if ( event.detail.el.className == "apple beganEating" || event.detail.el.className == "apple beganDigesting"){return;}
     if (event.detail.el.className == "apple") {
         eatApple(event.detail.el)
     } else {
@@ -78,14 +78,13 @@ function checkColision(event) {
 function convertApple(event){
     return function(){
         let snakeBodyPart = event.detail.el;
-        console.log("hit just ended", event)
 
         // we remove the queue from the current last element
         const queueTracker = document.querySelector('#queue')
         const precedentLast = document.querySelector('.last')
         precedentLast.removeChild(queueTracker)
 
-        // console.log(snakeBodyPart.getAttribute("count-ticks"));
+        // console.log(snakeBodyPart.getAttribute("count-ticks").ticksNumber);
         let tickDelay = snakeBodyPart.getAttribute("count-ticks").ticksNumber;
         snakeBodyPart.removeAttribute("count-ticks")
         console.log("the tick delay is of ", tickDelay)
@@ -118,7 +117,6 @@ AFRAME.registerComponent('click-pause', {
 AFRAME.registerComponent('colision', {
     init: function () {
         this.el.addEventListener('hit', checkColision)
-        // this.el.addEventListener('hitend', convertApple)
     }
 })
 
@@ -201,7 +199,6 @@ AFRAME.registerComponent('aabb-collider', {
                 boundingBox.setFromObject(mesh);
                 elMin = boundingBox.min;
                 elMax = boundingBox.max;
-                // console.log(self.elMin, self.elMAx, elMin, elMax)
                 // Bounding boxes are always aligned with the world coordinate system.
                 // The collision test checks for the conditions where cubes intersect.
                 // It's an extension to 3 dimensions of this approach (with the condition negated)
@@ -234,6 +231,7 @@ AFRAME.registerComponent('start-game-on-click', {
     }
 })
 
+
 function createApple(n = 1) {
     for (i = 0; i < n; i++) {
         const randomX = Math.floor(Math.random() * (appleAppearanceZone.x[1] - appleAppearanceZone.x[0] +1)) + appleAppearanceZone.x[0];
@@ -257,8 +255,6 @@ function createApple(n = 1) {
 }
 
 function startGame(){
-    console.log("start the game!")
-
     createApple(2);
 
     Array.prototype.slice.call(document.querySelectorAll('.wall')).forEach(wall => {
