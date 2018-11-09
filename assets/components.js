@@ -107,23 +107,24 @@ function convertApple(event, tickDelay){
         snakeBodyPart.setAttribute("class", "snake body-snake last")
         snakeBodyPart.setAttribute("color", "#21db0d")
         snakeBodyPart.setAttribute('geometry', 'primitive:box;')
+        snakeBodyPart.removeAttribute('src')
 
         //append the queue tracker to the "new" end of the snake
         snakeBodyPart.appendChild(queueTracker)
     }
 }
 
-AFRAME.registerComponent('click-pause', {
-    init: function () {
-        this.el.addEventListener('click', () => {
-            if (gameStarted) {
-                isPaused = !isPaused
-                document.querySelector('#legend').setAttribute('visible', isPaused)
-                document.querySelector('#legend').setAttribute('value', "Game is paused")
-            }
-        })
-    }
-})
+// AFRAME.registerComponent('click-pause', {
+//     init: function () {
+//         this.el.addEventListener('click', () => {
+//             if (gameStarted) {
+//                 isPaused = !isPaused
+//                 document.querySelector('#legend').setAttribute('visible', isPaused)
+//                 document.querySelector('#legend').setAttribute('value', "Game is paused")
+//             }
+//         })
+//     }
+// })
 
 AFRAME.registerComponent('colision', {
     init: function () {
@@ -251,8 +252,9 @@ function createApple(n = 1) {
         apple.setAttribute('width', '1')
         apple.setAttribute('height', '1')
         apple.setAttribute('class', 'apple')
-        apple.setAttribute('color', 'red')
+        apple.setAttribute('color', 'white')
         apple.setAttribute('aabb-collider', 'objects:#head;')
+        apple.setAttribute('src', 'assets/apple.jpg')
         apple.setAttribute('geometry', 'primitive:sphere;')
 
 
