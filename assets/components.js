@@ -109,6 +109,7 @@ function convertApple(event){
         //we convert the apple
         snakeBodyPart.setAttribute("class", "snake body-snake last")
         snakeBodyPart.setAttribute("color", "#21db0d")
+        snakeBodyPart.setAttribute('geometry', 'primitive:box;')
 
         //append the queue tracker to the "new" end of the snake
         snakeBodyPart.appendChild(queueTracker)
@@ -254,6 +255,7 @@ function createApple(n = 1) {
         apple.setAttribute('class', 'apple')
         apple.setAttribute('color', 'red')
         apple.setAttribute('aabb-collider', 'objects:#head;')
+        apple.setAttribute('geometry', 'primitive:sphere;')
 
 
         scene.append(apple);
