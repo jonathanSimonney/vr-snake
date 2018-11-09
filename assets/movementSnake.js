@@ -27,7 +27,7 @@ function checkColisionEnd(event){
 
         snakeTickLength += delay
 
-        delayedEvents.push({'triggerTicks': delay, 'execute': convertApple(event, delay), 'currentTickNumber': 0})
+        delayedEvents.push({'triggerTicks': snakeTickLength, 'execute': convertApple(event, delay), 'currentTickNumber': 0})
     }
 }
 
