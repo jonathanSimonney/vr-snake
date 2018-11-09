@@ -10,6 +10,7 @@ let isPaused = true;
 var eatsound = new Audio('assets/eatsound.ogg');
 var diesound = new Audio('assets/diesound.ogg');
 var music = new Audio('assets/music.mp3')
+music.loop = true;
 
 AFRAME.registerComponent('always-moving', {
     schema: {
@@ -264,6 +265,10 @@ function createApple(n = 1) {
 
 function startGame(){
     console.log("start the game!")
+    // music.addEventListener('ended', function() {
+    //     this.currentTime = 0;
+    //     this.play();
+    // }, false);
     music.play()
 
     createApple(2);
