@@ -7,17 +7,6 @@ const appleAppearanceZone = {
 }
 let score = 0;
 let isPaused = true;
-delayedEvents = []; //array of event with a tick before they should be triggered
-
-function checkForEvents(){
-    delayedEvents.forEach((singleDelayedEvent, index, object) => {
-        singleDelayedEvent.currentTickNumber++
-        if (singleDelayedEvent.currentTickNumber === singleDelayedEvent.triggerTicks){
-            singleDelayedEvent.execute();
-            object.splice(index, 1)
-        }
-    })
-}
 
 AFRAME.registerComponent('always-moving', {
     schema: {
@@ -66,19 +55,21 @@ function looseGame(event){
     document.querySelector('#legend').setAttribute('visible', true)
 }
 
-function eatApple(event) {
-    // score++
-    // console.log(score)
+function eatApple(eatenApple) {
+    score++
     // document.querySelector('a-scene').removeChild(event.detail.el)
-    event.detail.el.setAttribute("color", "#b413d8")
+    eatenApple.setAttribute("color", "#b413d8")
+    eatenApple.setAttribute("class", "beganEating")
+
     // createApple()
 }
 
 function checkColision(event) {
     if (!event.detail.el){return;}
     // console.log(event)
+    if ( event.detail.el.className == "beganEating" || event.detail.el.className == "beganDigesting"){return;}
     if (event.detail.el.className == "apple") {
-        eatApple(event)
+        eatApple(event.detail.el)
     } else {
         looseGame(event)
     }
@@ -93,6 +84,11 @@ function convertApple(event){
         const queueTracker = document.querySelector('#queue')
         const precedentLast = document.querySelector('.last')
         precedentLast.removeChild(queueTracker)
+
+        // console.log(snakeBodyPart.getAttribute("count-ticks"));
+        let tickDelay = snakeBodyPart.getAttribute("count-ticks").ticksNumber;
+        snakeBodyPart.removeAttribute("count-ticks")
+        console.log("the tick delay is of ", tickDelay)
 
         //todo make the new body part follow the precedent last elem, BEFORE removing the last class. See if component should be a follow-elem (applied on new queue),
         //todo or a track-following (applied on precedent last)
@@ -109,9 +105,7 @@ function convertApple(event){
         // durationPath = 100 * document.querySelectorAll('a-curve a-curve-point').length //todo see best way to have a correct duration path, as tick are a measurement of game, not of time
         // snakeBodyPart.setAttribute("alongpath", "curve: #pathFollowed; rotation: true; duration: " + durationPath + ";")
 
-        //and increment the score and add a new apple
-        score++
-        console.log(score)
+        //add a new apple
         createApple()
     }
 }
