@@ -1,3 +1,5 @@
+let isFirstAppleEaten = false;
+
 AFRAME.registerComponent('queue', {
     init: function () {
         this.el.setAttribute('aabb-collider', 'objects:.apple;')
@@ -10,17 +12,25 @@ AFRAME.registerComponent('queue', {
 function beginCountingTick(event){
     if (!event.detail.el){return;}
 
-    if (event.detail.el.className === "beganEating"){
+    if (event.detail.el.className === "apple beganEating"){
         event.detail.el.setAttribute("count-ticks", true)
-        event.detail.el.setAttribute("class", "beganDigesting")
+        event.detail.el.setAttribute("class", "apple beganDigesting")
     }
 }
 
 function checkColisionEnd(event){
     if (!event.detail.el){return;}
 
-    if (event.detail.el.className === "beganDigesting"){
-        delayedEvents.push({'triggerTicks': 15, 'execute': convertApple(event), 'currentTickNumber': 0})
+    // console.log(event.detail.el.className);
+
+    if (event.detail.el.className === "apple beganDigesting"){
+        let delay = 0
+        if (!isFirstAppleEaten){
+            delay = 10
+            isFirstAppleEaten = true;
+        }
+
+        delayedEvents.push({'triggerTicks': delay, 'execute': convertApple(event), 'currentTickNumber': 0})
     }
 }
 

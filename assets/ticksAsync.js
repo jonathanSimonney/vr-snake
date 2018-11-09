@@ -4,7 +4,7 @@ delayedEvents = []; //array of event with a tick before they should be triggered
 function checkForEvents(){
     delayedEvents.forEach((singleDelayedEvent, index, object) => {
         singleDelayedEvent.currentTickNumber++
-        if (singleDelayedEvent.currentTickNumber === singleDelayedEvent.triggerTicks){
+        if (singleDelayedEvent.currentTickNumber >= singleDelayedEvent.triggerTicks){
             singleDelayedEvent.execute();
             object.splice(index, 1)
         }
