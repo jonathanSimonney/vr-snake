@@ -70,7 +70,7 @@ function looseGame(event){
 function eatApple(eatenApple) {
     eatsound.play();
     score++
-    // document.querySelector('a-scene').removeChild(event.detail.el)
+    document.querySelector('#score').setAttribute('value', score)
     eatenApple.setAttribute("color", "#b413d8")
     eatenApple.setAttribute("class", "apple beganEating")
 
