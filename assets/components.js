@@ -73,6 +73,7 @@ function eatApple(eatenApple) {
     document.querySelector('#score').setAttribute('value', score)
     eatenApple.setAttribute("color", "#b413d8")
     eatenApple.setAttribute("class", "apple beganEating")
+    eatenApple.setAttribute("count-ticks", true)
 
     createApple()
 }
@@ -80,7 +81,7 @@ function eatApple(eatenApple) {
 function checkColision(event) {
     if (!event.detail.el){return;}
     // console.log(event)
-    if ( event.detail.el.className == "apple beganEating" || event.detail.el.className == "apple beganDigesting"){return;}
+    if ( event.detail.el.className == "apple beganEating"){return;}
     if (event.detail.el.className == "apple") {
         eatApple(event.detail.el)
     } else if (gameStarted) {
@@ -88,7 +89,7 @@ function checkColision(event) {
     }
 }
 
-function convertApple(event){
+function convertApple(event, tickDelay){
     return function(){
         let snakeBodyPart = event.detail.el;
 
@@ -98,10 +99,6 @@ function convertApple(event){
         precedentLast.removeChild(queueTracker)
 
         // console.log(snakeBodyPart.getAttribute("count-ticks").ticksNumber);
-        let tickDelay = snakeBodyPart.getAttribute("count-ticks").ticksNumber;
-        snakeBodyPart.removeAttribute("count-ticks")
-        console.log("the tick delay is of ", tickDelay)
-
         snakeBodyPart.setAttribute("follow-permanently", "spaceTicks: " + tickDelay + ";" + "followedSelector: .last;")
 
         precedentLast.setAttribute("class", "snake body-snake")//thus removing the last class
@@ -131,6 +128,7 @@ AFRAME.registerComponent('click-pause', {
 AFRAME.registerComponent('colision', {
     init: function () {
         this.el.addEventListener('hit', checkColision)
+        this.el.addEventListener('hitend', checkColisionEnd)
     }
 })
 
