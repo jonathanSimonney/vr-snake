@@ -250,6 +250,7 @@ function createApple(n = 1) {
         apple.setAttribute('class', 'apple')
         apple.setAttribute('color', 'red')
         apple.setAttribute('aabb-collider', 'objects:#head;')
+        apple.setAttribute('sound', 'src: url(assets/eatsound.ogg); autoplay: true')
 
         scene.append(apple);
     }
