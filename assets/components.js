@@ -269,6 +269,7 @@ function startGame(){
 
     Array.prototype.slice.call(document.querySelectorAll('.wall')).forEach(wall => {
         wall.setAttribute('aabb-collider', 'objects:#head;')
+        wall.setAttribute('src', 'assets/wall.jpg');
     })
 
     document.querySelector('#player').setAttribute('always-moving', true)
