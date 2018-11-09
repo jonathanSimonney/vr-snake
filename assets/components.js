@@ -253,7 +253,7 @@ function createApple(n = 1) {
         apple.setAttribute('width', '1')
         apple.setAttribute('height', '1')
         apple.setAttribute('class', 'apple')
-        apple.setAttribute('color', 'red')
+        apple.setAttribute('color', 'white')
         apple.setAttribute('aabb-collider', 'objects:#head;')
         apple.setAttribute('src', 'assets/apple.jpg')
         apple.setAttribute('geometry', 'primitive:sphere;')
