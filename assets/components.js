@@ -6,15 +6,18 @@ const appleAppearanceZone = {
     z: [5, 45],
 }
 let score = 0;
-let isPaused = true;
+let isPaused = false;
+let gameStarted = false;
 var eatsound = new Audio('assets/eatsound.ogg');
 var diesound = new Audio('assets/diesound.ogg');
 var music = new Audio('assets/music.mp3')
 music.loop = true;
+music.volume = 0.1
+
 
 AFRAME.registerComponent('always-moving', {
     schema: {
-        speed: {type: 'float', default: 0.05}, // Décalage sur l'axe (step)
+        speed: {type: 'float', default: 0.09}, // Décalage sur l'axe (step)
     },
 
     init: function(){
@@ -54,10 +57,12 @@ AFRAME.registerComponent('always-moving', {
 
 function looseGame(event){
     console.log("the game is lost");
-    isPaused = true;
+    gameStarted = false;
     document.querySelector('#player').removeAttribute('always-moving')
-    document.querySelector('#legend a-text').setAttribute('value', 'you lost. your score is of ' + score)
+    document.querySelector('#legend').setAttribute('value', 'You lost. Your score is of ' + score)
     document.querySelector('#legend').setAttribute('visible', true)
+    music.pause()
+    music.currentTime = 0
     diesound.play();
 }
 
@@ -77,7 +82,7 @@ function checkColision(event) {
     if ( event.detail.el.className == "beganEating" || event.detail.el.className == "beganDigesting"){return;}
     if (event.detail.el.className == "apple") {
         eatApple(event.detail.el)
-    } else if (!isPaused) {
+    } else if (gameStarted) {
         looseGame(event)
     }
 }
@@ -116,8 +121,11 @@ function convertApple(event){
 AFRAME.registerComponent('click-pause', {
     init: function () {
         this.el.addEventListener('click', () => {
-            isPaused = !isPaused
-            document.querySelector('#pausedIndic').setAttribute('visible', isPaused)
+            if (gameStarted) {
+                isPaused = !isPaused
+                document.querySelector('#legend').setAttribute('visible', isPaused)
+                document.querySelector('#legend').setAttribute('value', "Game is paused")
+            }
         })
     }
 })
@@ -235,12 +243,6 @@ AFRAME.registerComponent('aabb-collider', {
     })()
 });
 
-AFRAME.registerComponent('start-game-on-click', {
-    init: function () {
-        this.el.addEventListener('click', startGame)
-    }
-})
-
 function createApple(n = 1) {
     for (i = 0; i < n; i++) {
         const randomX = Math.floor(Math.random() * (appleAppearanceZone.x[1] - appleAppearanceZone.x[0] +1)) + appleAppearanceZone.x[0];
@@ -265,13 +267,11 @@ function createApple(n = 1) {
 
 function startGame(){
     console.log("start the game!")
-    // music.addEventListener('ended', function() {
-    //     this.currentTime = 0;
-    //     this.play();
-    // }, false);
+
     music.play()
 
     createApple(2);
+    gameStarted = true;
 
     Array.prototype.slice.call(document.querySelectorAll('.wall')).forEach(wall => {
         wall.setAttribute('aabb-collider', 'objects:#head;')
@@ -283,3 +283,12 @@ function startGame(){
     document.querySelector('#legend').removeAttribute('start-game-on-click')
     document.querySelector('#legend').removeEventListener('click', startGame)
 }
+window.onload = function() {
+    document.querySelector('a-scene').addEventListener('enter-vr', function () {
+        document.querySelector('#legend').setAttribute('value', "The game will start soon")
+        setTimeout(function() {
+            startGame();
+        }, 3000)
+    });
+}
+
