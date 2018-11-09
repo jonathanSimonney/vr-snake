@@ -12,7 +12,8 @@ var eatsound = new Audio('assets/eatsound.ogg');
 var diesound = new Audio('assets/diesound.ogg');
 var music = new Audio('assets/music.mp3')
 music.loop = true;
-music.volume = 0.1
+music.volume = 0.05
+eatsound.volume = 1
 
 
 AFRAME.registerComponent('always-moving', {
