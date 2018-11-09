@@ -269,7 +269,6 @@ function startGame(){
 
     Array.prototype.slice.call(document.querySelectorAll('.wall')).forEach(wall => {
         wall.setAttribute('aabb-collider', 'objects:#head;')
-        wall.setAttribute('src', 'assets/wall.jpg');
     })
 
     document.querySelector('#player').setAttribute('always-moving', true)
@@ -280,6 +279,9 @@ function startGame(){
 }
 window.onload = function() {
     document.querySelector('a-scene').addEventListener('enter-vr', function () {
+        Array.prototype.slice.call(document.querySelectorAll('.wall')).forEach(wall => {
+            wall.setAttribute('src', 'assets/wall.jpg');
+        })
         document.querySelector('#legend').setAttribute('value', "The game will start soon")
         setTimeout(function() {
             startGame();
