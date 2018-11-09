@@ -90,7 +90,7 @@ AFRAME.registerComponent('follow-permanently', {
     },
 
     tick: function(){
-        if (isPaused){return;}
+        if (isPaused && gameStarted){return;}
         this.data.numberTicks++;
         this.updatePositionAndRotation()
         if (this.data.numberTicks === this.data.spaceTicks){

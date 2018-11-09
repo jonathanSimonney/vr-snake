@@ -73,7 +73,7 @@ function eatApple(eatenApple) {
     eatenApple.setAttribute("color", "#b413d8")
     eatenApple.setAttribute("class", "apple beganEating")
 
-    // createApple()
+    createApple()
 }
 
 function checkColision(event) {
@@ -111,9 +111,6 @@ function convertApple(event){
 
         //append the queue tracker to the "new" end of the snake
         snakeBodyPart.appendChild(queueTracker)
-
-        //add a new apple
-        createApple()
     }
 }
 
@@ -272,6 +269,7 @@ function startGame(){
 
     Array.prototype.slice.call(document.querySelectorAll('.wall')).forEach(wall => {
         wall.setAttribute('aabb-collider', 'objects:#head;')
+        wall.setAttribute('src', 'assets/wall.jpg');
     })
 
     document.querySelector('#player').setAttribute('always-moving', true)
