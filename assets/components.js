@@ -7,6 +7,10 @@ const appleAppearanceZone = {
 }
 let score = 0;
 let isPaused = true;
+var eatsound = new Audio('assets/eatsound.ogg');
+var diesound = new Audio('assets/diesound.ogg');
+var music = new Audio('assets/music.mp3')
+music.loop = true;
 
 AFRAME.registerComponent('always-moving', {
     schema: {
@@ -49,13 +53,16 @@ AFRAME.registerComponent('always-moving', {
 });
 
 function looseGame(event){
-    console.log("the game is lost")
+    console.log("the game is lost");
+    isPaused = true;
     document.querySelector('#player').removeAttribute('always-moving')
     document.querySelector('#legend a-text').setAttribute('value', 'you lost. your score is of ' + score)
     document.querySelector('#legend').setAttribute('visible', true)
+    diesound.play();
 }
 
 function eatApple(eatenApple) {
+    eatsound.play();
     score++
     // document.querySelector('a-scene').removeChild(event.detail.el)
     eatenApple.setAttribute("color", "#b413d8")
@@ -70,7 +77,7 @@ function checkColision(event) {
     if ( event.detail.el.className == "apple beganEating" || event.detail.el.className == "apple beganDigesting"){return;}
     if (event.detail.el.className == "apple") {
         eatApple(event.detail.el)
-    } else {
+    } else if (!isPaused) {
         looseGame(event)
     }
 }
@@ -248,13 +255,20 @@ function createApple(n = 1) {
         apple.setAttribute('class', 'apple')
         apple.setAttribute('color', 'red')
         apple.setAttribute('aabb-collider', 'objects:#head;')
-        apple.setAttribute('sound', 'src: url(assets/eatsound.ogg); autoplay: true')
+
 
         scene.append(apple);
     }
 }
 
 function startGame(){
+    console.log("start the game!")
+    // music.addEventListener('ended', function() {
+    //     this.currentTime = 0;
+    //     this.play();
+    // }, false);
+    music.play()
+
     createApple(2);
 
     Array.prototype.slice.call(document.querySelectorAll('.wall')).forEach(wall => {
