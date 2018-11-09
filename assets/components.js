@@ -73,7 +73,7 @@ function eatApple(eatenApple) {
     eatenApple.setAttribute("color", "#b413d8")
     eatenApple.setAttribute("class", "apple beganEating")
 
-    // createApple()
+    createApple()
 }
 
 function checkColision(event) {
@@ -111,9 +111,6 @@ function convertApple(event){
 
         //append the queue tracker to the "new" end of the snake
         snakeBodyPart.appendChild(queueTracker)
-
-        //add a new apple
-        createApple()
     }
 }
 

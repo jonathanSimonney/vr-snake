@@ -10,13 +10,14 @@
 
 
 <a-scene environment="preset: default; playArea=50;" click-pause>
+
     <!--walls for the box-->
-    <a-box position="0 20 0" class="wall" depth="1" height="40" width="50" color="yellow"></a-box>
-    <a-box position="25 20 25" class="wall" depth="50" height="40" width="1" color="yellow"></a-box>
-    <a-box position="-25 20 25" class="wall" depth="50" height="40" width="1" color="yellow"></a-box>
-    <a-box position="0 20 50" class="wall" depth="1" height="40" width="50" color="yellow"></a-box>
-    <a-box position="0 1 25" class="wall" depth="50" height="1" width="50" color="yellow"></a-box>
-    <a-box position="0 40 25" class="wall" depth="50" height="1" width="50" color="yellow"></a-box>
+    <a-box position="0 20 0" class="wall" depth="1" height="40" width="50" src="assets/wall.jpg"></a-box>
+    <a-box position="25 20 25" class="wall" depth="50" height="40" width="1" src="assets/wall.jpg"><s/a-box>
+    <a-box position="-25 20 25" class="wall" depth="50" height="40" width="1" src="assets/wall.jpg"></a-box>
+    <a-box position="0 20 50" class="wall" depth="1" height="40" width="50" src="assets/wall.jpg"></a-box>
+    <a-box position="0 1 25" class="wall" depth="50" height="1" width="50" src="assets/wall.jpg"></a-box>
+    <a-box position="0 40 25" class="wall" depth="50" height="1" width="50" src="assets/wall.jpg"></a-box>
 
     <a-curve id="pathFollowed"></a-curve> <!-- will be filled by movement of the head -->
 
