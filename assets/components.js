@@ -96,20 +96,16 @@ function convertApple(event){
         snakeBodyPart.removeAttribute("count-ticks")
         console.log("the tick delay is of ", tickDelay)
 
-        //todo make the new body part follow the precedent last elem, BEFORE removing the last class. See if component should be a follow-elem (applied on new queue),
-        //todo or a track-following (applied on precedent last)
+        snakeBodyPart.setAttribute("follow-permanently", "spaceTicks: " + tickDelay + ";" + "followedSelector: .last;")
 
         precedentLast.setAttribute("class", "snake body-snake")//thus removing the last class
 
         //we convert the apple
-        // snakeBodyPart.setAttribute("queue", true)
         snakeBodyPart.setAttribute("class", "snake body-snake last")
         snakeBodyPart.setAttribute("color", "#21db0d")
 
         //append the queue tracker to the "new" end of the snake
         snakeBodyPart.appendChild(queueTracker)
-        // durationPath = 100 * document.querySelectorAll('a-curve a-curve-point').length //todo see best way to have a correct duration path, as tick are a measurement of game, not of time
-        // snakeBodyPart.setAttribute("alongpath", "curve: #pathFollowed; rotation: true; duration: " + durationPath + ";")
 
         //add a new apple
         createApple()
