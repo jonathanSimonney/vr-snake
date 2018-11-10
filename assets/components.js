@@ -294,7 +294,7 @@ window.onload = function() {
         document.querySelector('#legend').setAttribute('value', "The game will start soon")
         setTimeout(function() {
             startGame();
-        }, 3000)
+        }, 10000)
     });
 }
 
