@@ -283,7 +283,13 @@ function startGame(){
 window.onload = function() {
     document.querySelector('a-scene').addEventListener('enter-vr', function () {
         Array.prototype.slice.call(document.querySelectorAll('.wall')).forEach(wall => {
-            wall.setAttribute('src', 'assets/wall.jpg');
+            if (wall.className.includes("plafond")){
+                wall.setAttribute('src', 'assets/wood.jpg');
+            }else if(wall.className.includes("earth")){
+                wall.setAttribute('src', 'assets/earth.jpg');
+            }else{
+                wall.setAttribute('src', 'assets/wall.jpg');
+            }
         })
         document.querySelector('#legend').setAttribute('value', "The game will start soon")
         setTimeout(function() {
