@@ -1,10 +1,13 @@
 let initialPlayerRotation;
 const numberApples = 2;
 const appleAppearanceZone = {
-    x: [-20, 20],
+    x: [-35, 35],
     y: [5, 35],
-    z: [5, 45],
+    z: [5, 75],
 }
+
+speedIncrement = 0.001;
+
 let score = 0;
 let isPaused = false;
 let gameStarted = false;
@@ -67,9 +70,21 @@ function looseGame(event){
     diesound.play();
 }
 
+//called whenever an apple is eaten, will increase the snake speed
+function incrementSpeed(){
+    let currentSpeed = document.querySelector('#player').getAttribute('always-moving').speed
+    currentSpeed += speedIncrement
+    document.querySelector('#player').getAttribute('always-moving').speed = currentSpeed;
+    console.log("new speed : " + document.querySelector('#player').getAttribute('always-moving').speed)
+}
+
+//call when the head enters an apple space
 function eatApple(eatenApple) {
     eatsound.play();
     score++
+
+    incrementSpeed();
+
     document.querySelector('#score').setAttribute('value', score)
     eatenApple.setAttribute("color", "#b413d8")
     eatenApple.setAttribute("class", "apple beganEating")
@@ -267,7 +282,7 @@ function startGame(){
 
     music.play()
 
-    createApple(2);
+    createApple(numberApples);
     gameStarted = true;
 
     Array.prototype.slice.call(document.querySelectorAll('.wall')).forEach(wall => {
